@@ -1,6 +1,7 @@
 package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.Enchantments;
+import com.earth2me.essentials.Favoriting;
 import static com.earth2me.essentials.I18n.tl;
 import com.earth2me.essentials.MetaItemStack;
 import com.earth2me.essentials.User;
@@ -60,11 +61,14 @@ public class Commandenchant extends EssentialsCommand
 		}
 
 		final boolean allowUnsafe = ess.getSettings().allowUnsafeEnchantments() && user.isAuthorized("essentials.enchantments.allowunsafe");
-		
+
 		final MetaItemStack metaStack = new MetaItemStack(stack);
 		final Enchantment enchantment = metaStack.getEnchantment(user, args[0]);
 		metaStack.addEnchantment(user.getSource(), allowUnsafe, enchantment, level);
-		user.getBase().getInventory().setItemInHand(metaStack.getItemStack());
+
+		final ItemStack itemStack = metaStack.getItemStack();
+		itemStack.setItemMeta(Favoriting.applyLore(user.getSource(), itemStack.getItemMeta()));
+		user.getBase().getInventory().setItemInHand(itemStack);
 		
 		user.getBase().updateInventory();
 		final String enchantmentName = enchantment.getName().toLowerCase(Locale.ENGLISH);

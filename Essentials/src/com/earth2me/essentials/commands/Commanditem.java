@@ -1,5 +1,6 @@
 package com.earth2me.essentials.commands;
 
+import com.earth2me.essentials.Favoriting;
 import static com.earth2me.essentials.I18n.tl;
 import com.earth2me.essentials.MetaItemStack;
 import com.earth2me.essentials.User;
@@ -65,6 +66,7 @@ public class Commanditem extends EssentialsCommand
 			stack = metaStack.getItemStack();
 		}
 
+		stack.setItemMeta(Favoriting.applyLore(user.getSource(), stack.getItemMeta()));
 
 		if (stack.getType() == Material.AIR)
 		{
